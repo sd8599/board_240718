@@ -1,0 +1,58 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- <head th:replace="fragments/common :: head"> 옛날방식-->
+
+<head th:replace="~{fragments/common :: head}">
+</head>
+
+<body>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" th:replace="~{fragments/common :: menu('board')}">
+  </nav>
+
+  <main class="container">
+    <div class="bg-body-tertiary p-5 rounded">
+      <h2>게시판</h2>
+      <div>
+        <!-- 인텔리제에있는  model.addAttribute("boards",boards); 이거임 -->
+        <!-- 타임리프(우선)가 2를 먹어버려서 안나옴 -->
+        <!-- 총 건수 : <span th:text="${#lists.size(boards)}">2</span> -->
+        총 건수 : <span th:text="${#lists.size(boards)}">2</span>
+      </div>
+      <!-- <table class="table"> -->
+      <table class="table table-striped">
+        <thead>
+          <tr class="table table-primary">
+            <th scope="col">번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr> -->
+          <!-- each : 반복문생성 -->
+          <tr th:each="board : ${boards}">
+            <td th:text="${board.id}">Mark</td>
+            <!-- <td th:text="${board.title}">Otto</td> -->
+             <!-- 수정할 때 id를 가져가는 방법 -->
+            <td><a th:text="${board.title}" th:href="@{/board/form(id=${board.id})}">Otto</a></td>
+            <!-- th:href="@{/product/comments(id=${board.id})}"  -->
+            <td>홍길동</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="text-end">
+        <!-- <button type="button" class="btn btn-light">쓰기</button> -->
+        <a type="button" class="btn btn-light" th:href="@{/board/form}">쓰기</a>
+      </p>
+    </div>
+  </main>
+
+</body>
+
+</html>
