@@ -55,7 +55,8 @@
             <!-- 수정할 때 id를 가져가는 방법 -->
             <td><a th:text="${board.title}" th:href="@{/board/form(id=${board.id})}">Otto</a></td>
             <!-- th:href="@{/product/comments(id=${board.id})}"  -->
-            <td>홍길동</td>
+            <!-- <td>홍길동</td> -->
+            <td th:text="${board.user.username}">홍길동</td>
           </tr>
         </tbody>
       </table>

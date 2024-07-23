@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,13 +23,16 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//      csrf 공격해제
+        http.csrf(CsrfConfigurer::disable);
         http
                 .authorizeHttpRequests((requests) -> requests
 //                        .requestMatchers("/", "/home").permitAll()
 //                        .requestMatchers("/").permitAll()
 //                        .requestMatchers("/","/css/**").permitAll()
 //                        .requestMatchers("/","/css/**","/images/**").permitAll()
-                        .requestMatchers("/","/css/**","/images/**", "/account/register").permitAll()
+//                        .requestMatchers("/","/css/**","/images/**", "/account/register").permitAll()
+                        .requestMatchers("/","/css/**","/images/**", "/account/register", "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
