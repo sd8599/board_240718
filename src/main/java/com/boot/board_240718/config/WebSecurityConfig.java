@@ -25,11 +25,15 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
 //                        .requestMatchers("/", "/home").permitAll()
-                        .requestMatchers("/").permitAll()
+//                        .requestMatchers("/").permitAll()
+//                        .requestMatchers("/","/css/**").permitAll()
+//                        .requestMatchers("/","/css/**","/images/**").permitAll()
+                        .requestMatchers("/","/css/**","/images/**", "/account/register").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        .loginPage("/login")
+//                        .loginPage("/login")
+                        .loginPage("/account/login")
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll());
@@ -44,11 +48,11 @@ public class WebSecurityConfig {
                 .dataSource(dataSource)
 //                패스워드 암호화 메소드를 스프링에서 관리
                 .passwordEncoder(passwordEncoder())
-
-//              권한이있느냐없느냐 확인하는것
+//                사용자 인증
                 .usersByUsernameQuery("select username,password,enabled "
-                        + "from users"
+                        + "from user "
                         + "where username = ?")
+//                사용자 권한
                 .authoritiesByUsernameQuery("SELECT username, name " +
                         "FROM user_role ur " +
                         "INNER JOIN USER u " +
