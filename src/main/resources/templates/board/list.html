@@ -21,8 +21,22 @@
         <!-- 인텔리제에있는  model.addAttribute("boards",boards); 이거임 -->
         <!-- 타임리프(우선)가 2를 먹어버려서 안나옴 -->
         <!-- 총 건수 : <span th:text="${#lists.size(boards)}">2</span> -->
-        총 건수 : <span th:text="${#lists.size(boards)}">2</span>
+        총 건수 : <span th:text="${boards.totalElements}">2</span>
       </div>
+
+      <div class="d-flex justify-content-end">
+        <form class="row g-3"  th:action="@{/board/list}">
+          <div class="col-auto">
+            <label for="searchText" class="visually-hidden"></label>
+            <!-- <input type="text" class="form-control" id="searchText" name="searchText"> -->
+            <input type="text" class="form-control" id="searchText" name="searchText" th:value="${param.searchText}">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-light mb-3">검색</button>
+          </div>
+        </form>
+      </div>
+
       <!-- <table class="table"> -->
       <table class="table table-striped">
         <thead>
@@ -38,7 +52,7 @@
           <tr th:each="board : ${boards}">
             <td th:text="${board.id}">Mark</td>
             <!-- <td th:text="${board.title}">Otto</td> -->
-             <!-- 수정할 때 id를 가져가는 방법 -->
+            <!-- 수정할 때 id를 가져가는 방법 -->
             <td><a th:text="${board.title}" th:href="@{/board/form(id=${board.id})}">Otto</a></td>
             <!-- th:href="@{/product/comments(id=${board.id})}"  -->
             <td>홍길동</td>
@@ -52,6 +66,35 @@
       </p>
     </div>
   </main>
+
+  <nav aria-label="Page navigation example">
+    <!-- <ul class="pagination"> -->
+    <ul class="pagination justify-content-center">
+      <!-- <li class="page-item disabled"> -->
+      <li class="page-item" th:classappend="${1 == boards.pageable.pageNumber + 1} ? 'disabled' ">
+        <!-- <a class="page-link">Previous</a> -->
+        <!-- <a class="page-link" th:href="@{/board/list(page=${boards.pageable.pageNumber -1})}">Previous</a> -->
+        <a class="page-link" th:href="@{/board/list(page=${boards.pageable.pageNumber -1}, searchText=${param.searchText})}">Previous</a>
+      </li>
+      <!-- <li class="page-item"><a class="page-link" href="#">1</a></li> -->
+      <!-- <li class="page-item" th:each="i: ${#numbers.sequence(startPage, endPage)}"> -->
+      <li class="page-item" th:classappend="${i == boards.pageable.pageNumber + 1} ? 'disabled' "
+        th:each="i: ${#numbers.sequence(startPage, endPage)}">
+        <!-- <a class="page-link" th:href="@{/board/list(page=${i-1})}" href="#" th:text="${i}">1</a> -->
+        <a class="page-link" th:href="@{/board/list(page=${i-1}, searchText=${param.searchText})}" href="#" th:text="${i}">1</a>
+      </li>
+      <!-- <li class="page-item active" aria-current="page">
+        <a class="page-link" href="#">2</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+      <!-- <li class="page-item" > -->
+      <li class="page-item" th:classappend="${boards.totalPages == boards.pageable.pageNumber + 1} ? 'disabled' ">
+        <!-- <a class="page-link" href="#">Next</a> -->
+        <!-- <a class="page-link" href="#" th:href="@{/board/list(page=${boards.pageable.pageNumber +1})}">Next</a> -->
+        <a class="page-link" href="#" th:href="@{/board/list(page=${boards.pageable.pageNumber +1}, searchText=${param.searchText})}">Next</a>
+      </li>
+    </ul>
+  </nav>
 
 </body>
 
